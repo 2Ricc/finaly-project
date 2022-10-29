@@ -5,7 +5,7 @@ import {AuthPage} from "./pages/auth-page/auth-page";
 function App() {
   return (
     <div className="App">
-      <AuthPage/>
+<AuthPage/>
     </div>
   );
 }

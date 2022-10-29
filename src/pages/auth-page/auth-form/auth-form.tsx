@@ -1,11 +1,21 @@
 import React from 'react';
 import './auth-form.css';
-import {Button, Input, TextField, Typography} from "@mui/material";
-import {useForm, Controller} from "react-hook-form";
+import {Button, TextField, Typography} from "@mui/material";
+import {useForm, Controller, SubmitHandler, useFormState} from "react-hook-form";
+import {loginValidation, passwordValidation} from "./validation";
+
+interface ISignInform {
+    login: string
+    password: string
+}
 
 const AuthForm = () => {
-    const {handleSubmit, control} = useForm();
-    const onSubmit = () => console.log()
+    const {handleSubmit, control} = useForm<ISignInform>();
+    const {errors} = useFormState({
+        control
+    })
+    const onSubmit: SubmitHandler<ISignInform> = (data) => console.log(data)
+
     return (
         <div className='auth-form'>
             <Typography variant="h4" gutterBottom>
@@ -15,33 +25,39 @@ const AuthForm = () => {
                 Чтобы получить доступ
             </Typography>
             <form className='auth-form_form' onSubmit={handleSubmit(onSubmit)}>
-               <Controller
-               control={control}
-               name='login'
-               render={({field})=>(
-                   <TextField
-                       label='Логин'
-                       size='small'
-                       margin='normal'
-                       className='auth-form_input'
-                       fullWidth={true}
-                       onChange={(e)=> field.onChange(e)}
-                       value={field.value}
-                   />
-               )}
-               />
                 <Controller
                     control={control}
                     name='login'
-                    render={({field})=>(
+                    rules={loginValidation}
+                    render={({field}) => (
                         <TextField
-                            label='Пароль'
-                            type='password'
+                            label='Логин'
                             size='small'
                             margin='normal'
                             className='auth-form_input'
                             fullWidth={true}
+                            onChange={(e) => field.onChange(e)}
                             value={field.value}
+                            error={!!errors.login?.message}
+                            helperText={errors.login?.message}
+                        />
+                    )}
+                />
+                <Controller
+                    control={control}
+                    name='password'
+                    rules={passwordValidation}
+                    render={({field}) => (
+                        <TextField
+                            label='Пароль'
+                            size='small'
+                            margin='normal'
+                            className='auth-form_input'
+                            fullWidth={true}
+                            onChange={(e)=> field.onChange(e)}
+                            value={field.value}
+                            error={!!errors.password?.message}
+                            helperText={errors.password?.message}
                         />
                     )}
                 />
@@ -52,7 +68,7 @@ const AuthForm = () => {
                     fullWidth={true}
                     disableElevation={true}
                     sx={{
-                        marginTop:2
+                        marginTop: 2
                     }}
                 >
                     Войти
