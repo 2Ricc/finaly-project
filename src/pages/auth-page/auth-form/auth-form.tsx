@@ -1,6 +1,6 @@
 import React from 'react';
 import './auth-form.css';
-import {Button, Input, TextField, Typography} from "@mui/material";
+import {Button, TextField, Typography} from "@mui/material";
 import {useForm, Controller} from "react-hook-form";
 
 const AuthForm = () => {
@@ -14,6 +14,7 @@ const AuthForm = () => {
             <Typography variant="subtitle1" gutterBottom={true} className='auth-form_subtitle1'>
                 Чтобы получить доступ
             </Typography>
+
             <form className='auth-form_form' onSubmit={handleSubmit(onSubmit)}>
                <Controller
                control={control}
